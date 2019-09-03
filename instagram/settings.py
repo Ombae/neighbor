@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
-    'bootstrap3',
+    'bootstrap4',
 
 ]
 
@@ -102,16 +102,16 @@ DATABASES['default'].update(db_from_env)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'instaclone',
-#         'USER': 'postgres',
-#         'PASSWORD': '123456',
-#         'HOST': 'localhost', # the missing piece of the puzzle
-#         'PORT': ''
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'instaclone',
+        'USER': 'seth',
+        'PASSWORD': 'SethOmbae1',
+        'HOST': 'localhost', # the missing piece of the puzzle
+        'PORT': ''
+    }
+}
 
 
 # Password validation
