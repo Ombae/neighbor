@@ -9,3 +9,41 @@ from .models import Images, Profiles, Comments
 @login_required(login_url='/accounts/register/')
 def index(request):
     images = Images.get_all_images()
+    return render(request,'index.html',{'images':images})
+
+@login_required(login_url='/accounts/login/')
+def profile(request,username):
+    user = User.objects.get(username=username)
+    profile = Profiles.filter_profile_by_id(user.id)
+    title = f'{user.username}\'s Profile '
+    images = Images.get_profile_images(user.id)
+    return render(request, 'profile/profile.html',{'title':title,'users':user,'profile':profile,'images':images})
+
+@login_required(login_url='/accounts/login/')
+def post_image(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = PostImageForm(request.POST,request.FILES)
+        if form.is_valid():
+            image = form.save(commit=False)
+            image.profile = current_user
+            image.save()
+            return redirect('profile',username=request.user)
+    else:
+        form = PostImageForm()
+    return render(request,'profile/post_image.html',{'form':form})
+
+@login_required(login_url='/accounts/login/')
+def edit_profile(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = PostProfile(request.POST, request.FILES)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = current_user
+            profile.save()
+            return redirect('editProfile')
+    else:
+        form = PostProfile()
+
+    return render(request,'profile/edit_profile.html',{'form':form})
