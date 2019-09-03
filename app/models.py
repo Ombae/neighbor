@@ -28,3 +28,32 @@ class Profiles(models.Model):
     def get_profile_by_id(cls,id):
         profile = Profiles.objects.get(user = id)
         return profile
+
+class Images(models.Model):
+    image = models.ImageField(blank=True, )
+    caption = models.CharField(max_length=100)
+    posted = models.DateTimeField(auto_now=True)
+    profile = models.ForeignKey(User,on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('-posted',)
+
+    def save_image(self):
+        self.save()
+
+    def delete_image(self):
+        self.delete()
+    @classmethod
+    def get_image_by_id(cls,id):
+        image = Images.objects.get(pk=id)
+        return image
+
+    @classmethod
+    def get_profile_images(cls,profile):
+        images = Images.objects.filter(profile__pk= profile)
+        return images
+
+    @classmethod
+    def get_all_images(cls):
+        images = Images.objects.all()
+        return images
